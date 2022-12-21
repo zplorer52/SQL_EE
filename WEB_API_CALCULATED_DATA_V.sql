@@ -1,0 +1,61 @@
+CREATE OR REPLACE VIEW "S**USER"."V_CALCULATED_DATA"("RINDEX","LDATE","C001","C002","C003","C004","C005","C006",constraint V_CALCULATED_DATA_pk primary key (RINDEX) rely disable novalidate)
+AS
+  SELECT 
+    ROWNUM as RINDEX,
+    wtp.LDATE AS LDATE,
+    ---- 2712FT450+2712FT452+2712FI455+2712FI457+2GCK10CF001FT+0GAC90CF001FF+2712FI468+2712FI469+2712FI467+1R271FI405
+    ---- ORA_WTP_TT_FLOW  --- l/s  ---- CALC TOTAL FLOW OF WATER
+    ROUND((wtp.C215 + wtp.C023 + wtp.C024 + wtp.C025 + nps.C092 + 
+    nps.C093 + wtp.C029 + wtp.C030 + wtp.C028 + wtp.C216), 3) AS C001,
+    ---- SPARE
+    ROUND(0,3) AS C002,
+    ---- SPARE
+    ROUND(0,3) AS C003,
+    ---- SPARE
+    ROUND(0,3) AS C004,
+    ---- SPARE
+    ROUND(0,3) AS C005,
+    ---- SPARE
+    ROUND(0,3) AS C006
+
+FROM
+(SELECT
+      LDATE,
+      ---- 2712FT450
+      C215,
+      ---- 2712FT452->2712FC452
+      C023,    
+      ---- 2712FI455
+      C024,    
+      ---- 2712FI457
+      C025,
+      ---- 2712FI468->2712FT468
+      C029,
+      ---- 2712FI469->2712FT469
+      C030,
+      ---- 2712FI467->2712FT467
+      C028,
+      ---- 1R271FI405
+      C216
+FROM s**user.web_api_temp_data1) wtp,
+(SELECT
+      ---- 2GCK10CF001FT
+      C092, 
+      ---- 0GAC90CF001FF 
+      C093 
+FROM a**sg.CPY_NPS_PROCS_DATA_XFER) nps;
+
+------
+CREATE OR REPLACE VIEW "S**USER"."WEB_API_CALCULATED_DATA_V" ("RINDEX", "LDATE","DCSTAG", "VALUE", "UNIT", "TAGDESC")
+AS
+  SELECT B.ID AS RINDEX,
+    A.LDATE,
+    B.DCSTAG,
+    CASE(B.LOGCOL)
+      ---- ORA_WTP_TT_FLOW
+      WHEN 'C001' THEN DECODE(A.C001,-1,1,NULL,0,A.C001)
+    END,
+    B.UNIT,
+    B.TAGDESC
+  FROM S**USER.V_CALCULATED_DATA A, S**USER.M_CALCULATED_DATA B
+  WHERE B.LOGCOL IN ('C001') ORDER BY B.ID;
