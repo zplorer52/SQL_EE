@@ -46,3 +46,22 @@ UNION ALL
 SELECT pm_pulp2.id AS id,pm_pulp2.reg_date, FORMAT(pm_pulp2.value,2) AS col1 FROM pm_pulp2 WHERE (pm_pulp2.id=9)
 ) tt
 )aa;
+
+---- MySQL Table(pm_pulp2) Data ( CSV)
+---- ***************************************************************************
+---- id,tag,tag_desc,value,quality,reg_date
+---- 1,731TI-459,PM1 TEMPERATURE LP MAIN STEAM,148.77,good,2022-12-21 08:24:40
+---- 2,731TID-459,TEMP LP MAIN STEAM DIFF,-0.55,good,2022-12-21 08:25:10
+---- 3,731PI-399,PM1 LP STEAM PRESSURE,3.63,good,2022-12-21 08:24:40
+---- 4,731PI-398,PM1 MP STEAM PRESSURE,12.68,good,2022-12-21 08:25:10
+---- 5,731QI-3000,PM1 PRODUCTION t/h,26.15,good,2022-12-21 08:24:40
+---- 6,732TI-459,PM2 TEMPERATURE LP MAIN STEAM,148.51,good,2022-12-21 08:24:40
+---- 7,732TID-459,PM2 TEMP LP MAIN STEAM DIFF,0.34,good,2022-12-21 08:24:40
+---- 8,732PI-399,PM2 LP STEAM PRESSURE,3.52,good,2022-12-21 08:25:10
+---- 9,732QI-3000,PM2 PRODUCTION t/h,28.89,good,2022-12-21 08:24:40
+
+---- Result MYSQL(v_pm12_pulp2)
+---- ***************************************************************************
+---- idate,col1,col2,col3,col4,col5,col6,col7,col8,col9
+---- 2022-12-21 08:24:40,148.77,-0.55,3.63,12.68,26.15,148.51,0.34,3.52,28.89
+
